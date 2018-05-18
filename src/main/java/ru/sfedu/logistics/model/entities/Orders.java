@@ -142,6 +142,9 @@ public class Orders implements Serializable {
         if (this.id != other.id) {
             return false;
         }
+        if (this.route.getId() != other.route.getId()) {
+            return false;
+        }
         return true;
     }
 

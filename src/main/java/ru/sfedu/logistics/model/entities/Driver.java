@@ -30,10 +30,6 @@ public class Driver extends User implements Serializable {
     public Driver() {
     }
 
-    public Driver(Car car) {
-        this.car = car;
-    }
-
     public Driver(Car car, String login, String password, String name) {
         super(login, password, name);
         this.car = car;

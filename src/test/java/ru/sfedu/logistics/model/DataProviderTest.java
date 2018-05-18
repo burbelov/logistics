@@ -13,6 +13,7 @@ import ru.sfedu.logistics.model.entities.Car;
 import ru.sfedu.logistics.model.entities.Customer;
 import ru.sfedu.logistics.model.entities.Driver;
 import ru.sfedu.logistics.model.entities.LittleCar;
+import ru.sfedu.logistics.model.entities.OrderStatuses;
 import ru.sfedu.logistics.model.entities.Orders;
 import ru.sfedu.logistics.model.entities.Route;
 import ru.sfedu.logistics.model.entities.TypesOfCars;
@@ -166,12 +167,52 @@ public class DataProviderTest {
         }
         
     }
+    
+    /**
+     * Test of getCustomerByLogin method, of class DataProvider.
+     */
+    @Test
+    public void testCGetCustomerByLogin() {
+        System.out.println("getCustomerByLogin");
+        DataProviderResult result = dataProvider.getCustomerByLogin(customer.getLogin());
+        switch(result.getStatus()) {
+            case SUCCESS:
+                assertEquals(customer, result.getData().get(0));
+                System.out.println(result.getData().get(0));
+                break;
+            case NOT_FOUND:
+                fail("testCGetCustomerByLogin - тест не пройден!!!");
+                break;
+            case ERROR:
+                break;
+        }
+    }
+    
+    /**
+     * Test of getDriverByLogin method, of class DataProvider.
+     */
+    @Test
+    public void testDGetDriverByLogin() {
+        System.out.println("getDriverByLogin");
+        DataProviderResult result = dataProvider.getDriverByLogin(driver.getLogin());
+        switch(result.getStatus()) {
+            case SUCCESS:
+                assertEquals(driver, result.getData().get(0));
+                System.out.println(result.getData().get(0));
+                break;
+            case NOT_FOUND:
+                fail("testDGetDriverByLogin - тест не пройден!!!");
+                break;
+            case ERROR:
+                break;
+        }
+    }
 
     /**
      * Test of update method, of class DataProvider.
      */
     @Test
-    public void testCUpdate() {
+    public void testEUpdate() {
         System.out.println("update");
         customer.setLogin(getRandomString());
         driver.setLogin(getRandomString());
@@ -257,10 +298,54 @@ public class DataProviderTest {
     }
     
     /**
+     * Test of getOrders method, of class DataProvider.
+     */
+    @Test
+    public void testFgetOrders() {
+        System.out.println("getOrders");
+        DataProviderResult result = dataProvider.getOrders();
+        switch(result.getStatus()) {
+            case SUCCESS:
+                fail("getOrders - тест не пройден!!!");
+                break;
+            case NOT_FOUND:
+                break;
+            case ERROR:
+                break;
+        }
+        order.setDriver(null);
+        dataProvider.saveOrUpdate(order);
+        result = dataProvider.getOrders();
+        switch(result.getStatus()) {
+            case SUCCESS:
+                assertEquals(order, result.getData().get(0));
+                System.out.println(result.getData().get(0));
+                break;
+            case NOT_FOUND:
+                fail("getOrders - тест не пройден!!!");
+                break;
+            case ERROR:
+                break;
+        }
+        order.setOrderStatus(OrderStatuses.DONE);
+        dataProvider.saveOrUpdate(order);
+        result = dataProvider.getOrders();
+        switch(result.getStatus()) {
+            case SUCCESS:
+                fail("getOrders - тест не пройден!!!");
+                break;
+            case NOT_FOUND:
+                break;
+            case ERROR:
+                break;
+        }
+    }
+    
+    /**
      * Test of delete method, of class DataProvider.
      */
     @Test
-    public void testDDelete() {
+    public void testIDelete() {
         System.out.println("delete");
         
         /*
@@ -311,8 +396,6 @@ public class DataProviderTest {
         * Проверка удаления customer
         * При удалении customer каскадно удаляется order
         */
-        
-        /*БЕЗ ЭТОГО  НЕ РАБОТАЕТ!!!!!??????*/
         route = new Route(new Address(getRandomString(), getRandomString(), getRandomString()), 
                         new Address(getRandomString(), getRandomString(), getRandomString()), 
                         getRandomInt());

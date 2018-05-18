@@ -3,7 +3,11 @@ package ru.sfedu.logistics;
 import ru.sfedu.logistics.model.DataProvider;
 import ru.sfedu.logistics.model.DataProviderResult;
 import ru.sfedu.logistics.model.entities.Address;
+import ru.sfedu.logistics.model.entities.BigCar;
+import ru.sfedu.logistics.model.entities.Car;
 import ru.sfedu.logistics.model.entities.Customer;
+import ru.sfedu.logistics.model.entities.Driver;
+import ru.sfedu.logistics.model.entities.LittleCar;
 import ru.sfedu.logistics.model.entities.Orders;
 import ru.sfedu.logistics.model.entities.Route;
 import ru.sfedu.logistics.model.entities.TypesOfCars;
@@ -17,24 +21,10 @@ public class LogisticsClient {
     
     public static void main(String[] args) {
         DataProvider dataPrivider = new DataProvider();
-        Route route = new Route(new Address("city", "street", "number"), 
-                new Address("city1", "street1", "number1"), 0);
-        Customer customer = new Customer("asd", "sdfsdf", "zxcvxcv");
-        dataPrivider.saveOrUpdate(customer);
-        Orders order = new Orders((Customer) dataPrivider.getById(Customer.class, customer.getId()).getData().get(0), null, route, "dfsfsdf", 123L, TypesOfCars.LITTLE_CAR);
+        Driver driver = new Driver(new BigCar("asdf", 1, 2), "login", "pas", "name");
+        dataPrivider.saveOrUpdate(driver);
+        System.out.println(dataPrivider.getDriverByLogin(driver.getLogin()).getData().get(0));
         
-        dataPrivider.saveOrUpdate(order);
-        System.out.println("fuck"+order);
-        Orders newOrder = new Orders((Customer) dataPrivider.getById(Customer.class, customer.getId()).getData().get(0), null, route, "sdfsdf", 123L, TypesOfCars.LITTLE_CAR);
-        newOrder.setId(order.getId());
-        
-        dataPrivider.saveOrUpdate(newOrder);
-        System.out.println("fuck"+newOrder);
-        Route route1 = new Route(new Address("city", "street", "number"), 
-                new Address("city1", "street1", "number1"), 0);
-        newOrder.setRoute(route1);
-        
-        dataPrivider.saveOrUpdate(newOrder);
         
         //dataPrivider.closeSessionFactory();
     }

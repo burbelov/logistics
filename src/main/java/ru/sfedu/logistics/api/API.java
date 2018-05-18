@@ -118,6 +118,7 @@ public class API {
                     Arrays.asList("Type of car does not fit")
             );
         }
+        return new DataProviderResult(DataProviderStatuses.SUCCESS, null, null);
     }
 
 }

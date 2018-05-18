@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import ru.sfedu.logistics.model.entities.Customer;
 import ru.sfedu.logistics.model.entities.Driver;
+import ru.sfedu.logistics.model.entities.OrderStatuses;
 import ru.sfedu.logistics.model.entities.Orders;
 
 /**
@@ -17,7 +18,7 @@ import ru.sfedu.logistics.model.entities.Orders;
  */
 public class DataProvider {
     
-    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
     private static final Logger logger = LogManager.getLogger(DataProvider.class);
     
     public <T> DataProviderResult saveOrUpdate(T bean) {
@@ -28,6 +29,7 @@ public class DataProvider {
                 session.getTransaction().commit();
                 return new DataProviderResult(DataProviderStatuses.SUCCESS, null, null);
             } catch (Exception e) {
+                logger.error(e);
                 return new DataProviderResult(
                         DataProviderStatuses.ERROR, null, Arrays.asList(e));
             }
@@ -50,7 +52,7 @@ public class DataProvider {
                     .list();
             return customer.isEmpty()
                     ? new DataProviderResult(DataProviderStatuses.NOT_FOUND, null, null)
-                    : new DataProviderResult(DataProviderStatuses.SUCCESS, Arrays.asList(customer), null);
+                    : new DataProviderResult(DataProviderStatuses.SUCCESS, customer, null);
         }
     }
     
@@ -61,36 +63,19 @@ public class DataProvider {
                     .list();
             return driver.isEmpty()
                     ? new DataProviderResult(DataProviderStatuses.NOT_FOUND, null, null)
-                    : new DataProviderResult(DataProviderStatuses.SUCCESS, Arrays.asList(driver), null);
+                    : new DataProviderResult(DataProviderStatuses.SUCCESS, driver, null);
         }
     }
     
-    /*public <T> DataProviderResult getOrders(Driver driver) {
+    public DataProviderResult getOrders() {
         try (Session session = sessionFactory.openSession()) {
-            TypesOfCars typeOfCar = null;
-            Car car = driver.getCar();
-            if(car instanceof LittleCar) {
-                typeOfCar = TypesOfCars.LITTLE_CAR;
-            } else if(car instanceof BigCar) {
-                typeOfCar = TypesOfCars.BIG_CAR;
-            }
-            List<Orders> orders = session.createQuery("from Orders where driver = null"
-                    + "and typeOfCar = :typeOfCar and orderStatus = :orderStatus")
-                    .setParameter("typeOfCar", typeOfCar)
+            List<Orders> orders = session.createQuery("from Orders "
+                    + "where orderStatus = :orderStatus and driver = null")
                     .setParameter("orderStatus", OrderStatuses.NOT_DONE)
                     .list();
             return orders.isEmpty()
                     ? new DataProviderResult(DataProviderStatuses.NOT_FOUND, null, null)
-                    : new DataProviderResult(DataProviderStatuses.SUCCESS, Arrays.asList(orders), null);
-        }
-    }*/
-    
-    public <T> DataProviderResult getOrders(Driver driver) {
-        try (Session session = sessionFactory.openSession()) {
-            List<Orders> orders = session.createQuery("from Orders").list();
-            return orders.isEmpty()
-                    ? new DataProviderResult(DataProviderStatuses.NOT_FOUND, null, null)
-                    : new DataProviderResult(DataProviderStatuses.SUCCESS, Arrays.asList(orders), null);
+                    : new DataProviderResult(DataProviderStatuses.SUCCESS, orders, null);
         }
     }
     
@@ -102,6 +87,7 @@ public class DataProvider {
                 session.getTransaction().commit();
                 return new DataProviderResult(DataProviderStatuses.SUCCESS, null, null);
             } catch (Exception e) {
+                logger.error(e);
                 return new DataProviderResult(
                         DataProviderStatuses.ERROR, null, Arrays.asList(e));
             }
