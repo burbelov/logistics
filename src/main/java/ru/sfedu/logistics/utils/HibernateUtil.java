@@ -5,15 +5,15 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import ru.sfedu.logistics.model.entities.Address;
-import ru.sfedu.logistics.model.entities.BigCar;
-import ru.sfedu.logistics.model.entities.Car;
-import ru.sfedu.logistics.model.entities.Customer;
-import ru.sfedu.logistics.model.entities.Driver;
-import ru.sfedu.logistics.model.entities.LittleCar;
-import ru.sfedu.logistics.model.entities.Orders;
-import ru.sfedu.logistics.model.entities.Route;
-import ru.sfedu.logistics.model.entities.User;
+import ru.sfedu.logistics.entities.Address;
+import ru.sfedu.logistics.entities.HeavyTruck;
+import ru.sfedu.logistics.entities.Car;
+import ru.sfedu.logistics.entities.Customer;
+import ru.sfedu.logistics.entities.Driver;
+import ru.sfedu.logistics.entities.LightTruck;
+import ru.sfedu.logistics.entities.Orders;
+import ru.sfedu.logistics.entities.Route;
+import ru.sfedu.logistics.entities.User;
 
 public class HibernateUtil {
     
@@ -31,8 +31,8 @@ public class HibernateUtil {
             metadataSources.addAnnotatedClass(Car.class);
             metadataSources.addAnnotatedClass(Driver.class);
             metadataSources.addAnnotatedClass(Customer.class);
-            metadataSources.addAnnotatedClass(LittleCar.class);
-            metadataSources.addAnnotatedClass(BigCar.class);
+            metadataSources.addAnnotatedClass(LightTruck.class);
+            metadataSources.addAnnotatedClass(HeavyTruck.class);
             metadataSources.addAnnotatedClass(Route.class);
             metadataSources.addAnnotatedClass(Address.class);
             metadataSources.addAnnotatedClass(Orders.class);

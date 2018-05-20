@@ -1,5 +1,7 @@
 package ru.sfedu.logistics.model;
 
+import ru.sfedu.logistics.data_provider.Result;
+import ru.sfedu.logistics.data_provider.DataProvider;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -8,15 +10,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
-import ru.sfedu.logistics.model.entities.Address;
-import ru.sfedu.logistics.model.entities.Car;
-import ru.sfedu.logistics.model.entities.Customer;
-import ru.sfedu.logistics.model.entities.Driver;
-import ru.sfedu.logistics.model.entities.LittleCar;
-import ru.sfedu.logistics.model.entities.OrderStatuses;
-import ru.sfedu.logistics.model.entities.Orders;
-import ru.sfedu.logistics.model.entities.Route;
-import ru.sfedu.logistics.model.entities.TypesOfCars;
+import ru.sfedu.logistics.entities.Address;
+import ru.sfedu.logistics.entities.Car;
+import ru.sfedu.logistics.entities.Customer;
+import ru.sfedu.logistics.entities.Driver;
+import ru.sfedu.logistics.entities.LightTruck;
+import ru.sfedu.logistics.entities.OrderStatuses;
+import ru.sfedu.logistics.entities.Orders;
+import ru.sfedu.logistics.entities.Route;
+import ru.sfedu.logistics.entities.TypesOfCars;
 
 /**
  *
@@ -30,7 +32,7 @@ public class DataProviderTest {
     private static Orders order;
     private static Car car;
     private static Route route;
-    private static DataProvider dataProvider;
+    private static DataProvider dataProvider = new DataProvider();;
     
     public DataProviderTest() {
     }
@@ -53,13 +55,12 @@ public class DataProviderTest {
     @BeforeClass
     public static void setUpClass() {
         customer = new Customer(getRandomString(), getRandomString(), getRandomString());
-        car = new LittleCar(getRandomString(), getRandomInt(), getRandomInt());
+        car = new LightTruck(getRandomString(), getRandomInt(), getRandomInt());
         driver = new Driver(car, getRandomString(), getRandomString(), getRandomString());
         route = new Route(new Address(getRandomString(), getRandomString(), getRandomString()), 
                         new Address(getRandomString(), getRandomString(), getRandomString()), 
                         getRandomInt());
-        order = new Orders(customer, driver, route, getRandomString(), getRandomLong(), TypesOfCars.BIG_CAR);
-        dataProvider = new DataProvider();
+        order = new Orders(customer, driver, route, getRandomString(), getRandomLong(), TypesOfCars.HEAVY_TRUCK);
         
     }
     
@@ -83,7 +84,7 @@ public class DataProviderTest {
     public void testASave() {
         System.out.println("save");
         
-        DataProviderResult result = dataProvider.saveOrUpdate(customer);
+        Result result = dataProvider.saveOrUpdate(customer);
         switch(result.getStatus()) {
             case SUCCESS:
                 break;
@@ -127,7 +128,7 @@ public class DataProviderTest {
     public void testBGetById() {
         System.out.println("getById");
         
-        DataProviderResult result = dataProvider.getById(Driver.class, driver.getId());
+        Result result = dataProvider.getById(Driver.class, driver.getId());
         switch(result.getStatus()) {
             case SUCCESS:
                 assertEquals(driver, result.getData().get(0));
@@ -174,7 +175,7 @@ public class DataProviderTest {
     @Test
     public void testCGetCustomerByLogin() {
         System.out.println("getCustomerByLogin");
-        DataProviderResult result = dataProvider.getCustomerByLogin(customer.getLogin());
+        Result result = dataProvider.getCustomerByLogin(customer.getLogin());
         switch(result.getStatus()) {
             case SUCCESS:
                 assertEquals(customer, result.getData().get(0));
@@ -194,7 +195,7 @@ public class DataProviderTest {
     @Test
     public void testDGetDriverByLogin() {
         System.out.println("getDriverByLogin");
-        DataProviderResult result = dataProvider.getDriverByLogin(driver.getLogin());
+        Result result = dataProvider.getDriverByLogin(driver.getLogin());
         switch(result.getStatus()) {
             case SUCCESS:
                 assertEquals(driver, result.getData().get(0));
@@ -220,7 +221,7 @@ public class DataProviderTest {
         route.getAddressTo().setCity(getRandomString());
         order.setCargo(getRandomString());
         
-        DataProviderResult result = dataProvider.saveOrUpdate(customer);
+        Result result = dataProvider.saveOrUpdate(customer);
         switch(result.getStatus()) {
             case SUCCESS:
                 break;
@@ -303,7 +304,7 @@ public class DataProviderTest {
     @Test
     public void testFgetOrders() {
         System.out.println("getOrders");
-        DataProviderResult result = dataProvider.getOrders();
+        Result result = dataProvider.getOrders();
         switch(result.getStatus()) {
             case SUCCESS:
                 fail("getOrders - тест не пройден!!!");
@@ -352,7 +353,7 @@ public class DataProviderTest {
         * Проверка удаления order
         * При удалении order каскадно удаляется route
         */
-        DataProviderResult result = dataProvider.delete(order);
+        Result result = dataProvider.delete(order);
         switch(result.getStatus()) {
             case SUCCESS:
                 break;
@@ -399,7 +400,7 @@ public class DataProviderTest {
         route = new Route(new Address(getRandomString(), getRandomString(), getRandomString()), 
                         new Address(getRandomString(), getRandomString(), getRandomString()), 
                         getRandomInt());
-        order = new Orders(customer, driver, route, getRandomString(), getRandomLong(), TypesOfCars.BIG_CAR);
+        order = new Orders(customer, driver, route, getRandomString(), getRandomLong(), TypesOfCars.HEAVY_TRUCK);
         result = dataProvider.saveOrUpdate(order);
         switch(result.getStatus()) {
             case SUCCESS:
