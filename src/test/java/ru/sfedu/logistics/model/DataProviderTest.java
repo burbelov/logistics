@@ -66,7 +66,7 @@ public class DataProviderTest {
     
     @AfterClass
     public static void tearDownClass() {
-        dataProvider.closeSessionFactory();
+        //dataProvider.closeSessionFactory();
     }
     
     @Before
