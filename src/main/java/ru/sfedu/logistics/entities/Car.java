@@ -1,13 +1,16 @@
 package ru.sfedu.logistics.entities;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OrderColumn;
 
 /**
  *
@@ -23,11 +26,16 @@ public class Car implements Serializable {
     private String nameCar;
     private int fuelConsumption;
     private int mileage;
+    private TypesOfCars typeOfCar;
+    @ElementCollection
+    @OrderColumn
+    private List<MaintenanceInfo> maintenanceHistory = new ArrayList<>();
 
-    public Car(String nameCar, int fuelConsumption, int mileage) {
+    public Car(String nameCar, int fuelConsumption, int mileage, TypesOfCars typeOfCar) {
         this.nameCar = nameCar;
         this.fuelConsumption = fuelConsumption;
         this.mileage = mileage;
+        this.typeOfCar = typeOfCar;
     }
 
     public Car() {
@@ -65,6 +73,22 @@ public class Car implements Serializable {
         this.mileage = mileage;
     }
 
+    public TypesOfCars getTypeOfCar() {
+        return typeOfCar;
+    }
+
+    public void setTypeOfCar(TypesOfCars typeOfCar) {
+        this.typeOfCar = typeOfCar;
+    }
+
+    public List<MaintenanceInfo> getMaintenanceHistory() {
+        return maintenanceHistory;
+    }
+
+    public void setMaintenanceHistory(List<MaintenanceInfo> maintenanceHistory) {
+        this.maintenanceHistory = maintenanceHistory;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -80,25 +104,12 @@ public class Car implements Serializable {
         if (this.id != other.id) {
             return false;
         }
-        if (this.fuelConsumption != other.fuelConsumption) {
-            return false;
-        }
-        if (this.mileage != other.mileage) {
-            return false;
-        }
-        if (!Objects.equals(this.nameCar, other.nameCar)) {
-            return false;
-        }
         return true;
     }
-    
-    
 
     @Override
     public String toString() {
-        return "Car{" + "id=" + id + ", nameCar=" + nameCar + ", fuelConsumption=" + fuelConsumption + ", mileage=" + mileage + '}';
+        return "Car{" + "id=" + id + ", nameCar=" + nameCar + ", fuelConsumption=" + fuelConsumption + ", mileage=" + mileage + ", typeOfCar=" + typeOfCar + ", maintenanceHistory=" + maintenanceHistory + '}';
     }
-    
-    
     
 }

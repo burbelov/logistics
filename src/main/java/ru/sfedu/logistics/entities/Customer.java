@@ -1,5 +1,6 @@
 package ru.sfedu.logistics.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Customer extends User implements Serializable {
     
+    @JsonIgnore
     @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Orders> orders = new ArrayList<>();
 

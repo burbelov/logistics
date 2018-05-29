@@ -13,14 +13,13 @@ import ru.sfedu.logistics.entities.Address;
 import ru.sfedu.logistics.entities.Car;
 import ru.sfedu.logistics.entities.Customer;
 import ru.sfedu.logistics.entities.Driver;
-import ru.sfedu.logistics.entities.LightTruck;
 import ru.sfedu.logistics.entities.OrderStatuses;
 import ru.sfedu.logistics.entities.Orders;
 import ru.sfedu.logistics.entities.Route;
 import ru.sfedu.logistics.entities.TypesOfCars;
-import static ru.sfedu.logistics.model.DataProviderTest.getRandomInt;
-import static ru.sfedu.logistics.model.DataProviderTest.getRandomLong;
-import static ru.sfedu.logistics.model.DataProviderTest.getRandomString;
+import static ru.sfedu.logistics.data_provider.DataProviderTest.getRandomInt;
+import static ru.sfedu.logistics.data_provider.DataProviderTest.getRandomLong;
+import static ru.sfedu.logistics.data_provider.DataProviderTest.getRandomString;
 
 /**
  *
@@ -42,7 +41,7 @@ public class BusinessTest {
     @BeforeClass
     public static void setUpClass() {
         customer = new Customer(getRandomString(), getRandomString(), getRandomString());
-        car = new LightTruck(getRandomString(), getRandomInt(), getRandomInt());
+        car = new Car(getRandomString(), getRandomInt(), getRandomInt(), TypesOfCars.LIGHT_TRUCK);
         driver = new Driver(car, getRandomString(), getRandomString(), getRandomString());
         route = new Route(new Address(getRandomString(), getRandomString(), getRandomString()), 
                         new Address(getRandomString(), getRandomString(), getRandomString()), 
@@ -55,7 +54,6 @@ public class BusinessTest {
     
     @AfterClass
     public static void tearDownClass() {
-        business.close();
     }
     
     @Before

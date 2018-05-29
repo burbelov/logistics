@@ -6,10 +6,8 @@ import org.apache.logging.log4j.Logger;
 import ru.sfedu.logistics.data_provider.DataProvider;
 import ru.sfedu.logistics.data_provider.Result;
 import ru.sfedu.logistics.data_provider.ResultStatuses;
-import ru.sfedu.logistics.entities.HeavyTruck;
 import ru.sfedu.logistics.entities.Customer;
 import ru.sfedu.logistics.entities.Driver;
-import ru.sfedu.logistics.entities.LightTruck;
 import ru.sfedu.logistics.entities.OrderStatuses;
 import ru.sfedu.logistics.entities.Orders;
 
@@ -136,21 +134,7 @@ public class Business {
         }
         Driver driver = (Driver) result.getData().get(0);
         
-        boolean flagTakeOrder = false;
-        switch(order.getTypeOfCar()) {
-            case LIGHT_TRUCK:
-                if(driver.getCar() instanceof LightTruck) {
-                    flagTakeOrder = true;
-                }
-                break;
-            case HEAVY_TRUCK:
-                if(driver.getCar() instanceof HeavyTruck) {
-                    flagTakeOrder = true;
-                }
-                break;
-        }
-        
-        if(flagTakeOrder) {
+        if(order.getTypeOfCar() == driver.getCar().getTypeOfCar()) {
             order.setDriver(driver);
             return dataPriveder.saveOrUpdate(order);
         } else {
@@ -198,7 +182,7 @@ public class Business {
             order.setOrderStatus(OrderStatuses.DONE);
             dataPriveder.saveOrUpdate(order);
         } else {
-            String msg = "You can not cancel this order, because the driver's id in the order does not match your id.";
+            String msg = "You can not complete this order, because the customer's id in the order does not match your id.";
             logger.error(msg);
             return new Result(ResultStatuses.ERROR, null, Arrays.asList(msg));
         }

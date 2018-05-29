@@ -1,5 +1,7 @@
 package ru.sfedu.logistics.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class Driver extends User implements Serializable {
     )
     private Car car;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)
     private List<Orders> orders = new ArrayList<>();
 

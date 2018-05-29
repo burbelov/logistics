@@ -7,7 +7,6 @@ package ru.sfedu.logistics;
 public class LogisticsClient {
     
     public static void main(String[] args) {
-        
     }
 
 }

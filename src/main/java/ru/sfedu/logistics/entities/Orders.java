@@ -93,15 +93,7 @@ public class Orders implements Serializable {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
-    }
-
-    public long getDate() {
-        return dateOfExecution;
-    }
-
-    public void setDate(long date) {
-        this.dateOfExecution = date;
-    }    
+    }  
 
     public TypesOfCars getTypeOfCar() {
         return typeOfCar;
